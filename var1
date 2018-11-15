@@ -1,0 +1,67 @@
+//даны матрица и массив. обнулить те строки, номера кот-ых отст в массиве B, и суммировать сумму элементов ост строк
+const
+    lmax = 10;
+type
+    mas = array[1..lmax] of integer;
+    matr = array[1..lmax, 1..lmax] of integer;
+var
+    A: matr;
+    B: mas;
+    n, m, k, sum: integer;
+procedure input(var A: matr; var B: mas; var n, m, k: integer);
+var i, j: integer;
+begin
+    repeat
+        write('enter n, m, smaller than ', lmax, ': ');
+        readln(n, m);
+    until (n > 0) and (n <= lmax) and (m > 0) and (m <= lmax);
+    repeat
+        write('enter k, smaller than ', lmax, ': ');
+        readln(k);
+    until (k > 0) and (k <= lmax);
+        writeln('enter matr:');
+        for i:=1 to n do
+            for j := 1 to m do
+                read(A[i, j]);
+                
+        writeln('enter array:');
+        for i:=1 to k do
+            read(B[i]);
+end;
+
+procedure res(var sum: integer; var A: matr; var B: mas; n, m, k: integer);
+var 
+    i, j, t: integer;
+begin
+    sum := 0;
+    for i:=1 to n do
+    begin
+        t := 1;
+        while(t <= k) and (i <> B[t]) do
+            t := t + 1;
+        if (t > k) then
+            for j:=1 to m do
+                A[i, j] := 0
+        else
+            for j := 1 to m do
+                sum := sum + A[i, j];
+    end;
+end;
+
+procedure output(var A: matr; n, m, sum: integer);
+var i, j: integer;
+begin
+    writeln('sum: ', sum);
+    writeln('matrix');
+    for i:=1 to n do
+    begin
+        for j :=1 to m do
+            write(A[i, j], ' ');
+        writeln;
+    end;
+end;
+begin
+    input(A, B, n, m, k);
+    res(sum, A, B, n, m, k);
+    output(A, n, m, sum);
+end.
