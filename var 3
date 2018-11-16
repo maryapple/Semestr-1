@@ -1,0 +1,75 @@
+//даны матрица и массив. удалить эл-ты столбцов матрицы, номера кот-ых присут в массиве, сумму оставшихся эл-тов столбцов вычислить
+const
+    lmax = 10;
+type
+    mas = array[1..lmax] of integer;
+    matr = array[1..lmax, 1..lmax] of integer;
+var
+    A: matr;
+    B: mas;
+    n, m, k, sum: integer;
+procedure input(var A: matr; var B: mas; var n, m, k: integer);
+var i, j: integer;
+begin
+    repeat
+        write('enter n, m, smaller than ', lmax, ': ');
+        readln(n, m);
+    until (n > 0) and (n <= lmax) and (m > 0) and (m <= lmax);
+    repeat
+        write('enter k, smaller than ', lmax, ': ');
+        readln(k);
+    until (k > 0) and (k <= lmax);
+        writeln('enter matr:');
+        for i:=1 to n do
+            for j := 1 to m do
+                read(A[i, j]);
+                
+        writeln('enter array:');
+        for i:=1 to k do
+            read(B[i]);
+end;
+
+procedure res(var sum: integer; var A: matr; var B: mas; var n, m, k: integer);
+var 
+    i, j, t, l: integer;
+begin
+    sum := 0;
+    for j := 1 to m do
+    begin
+        t := 1;
+        while(t <= k) and (j <> B[t]) do
+            t := t + 1;
+        if (t <= k) then
+        begin
+            for l := j to m-1 do
+                for i := 1 to n do
+                begin
+                    A[i, l] := A[i, l+1];
+                end;
+  
+            m := m - 1;
+        end;
+    end;
+
+    for i:=1 to n do
+        for j:=1 to m do
+            sum:=sum+A[i,j];
+end;
+
+procedure output(var A: matr; n, m, sum: integer);
+var i, j: integer;
+begin
+    writeln('sum: ', sum);
+    writeln('matrix');
+    for i:=1 to n do
+    begin
+        for j :=1 to m do
+            write(A[i, j], ' ');
+        writeln;
+    end;
+end;
+begin
+    input(A, B, n, m, k);
+    res(sum, A, B, n, m, k);
+    output(A, n, m, sum);
+end.
